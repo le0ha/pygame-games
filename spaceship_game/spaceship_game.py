@@ -66,6 +66,7 @@ class Meteor(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(random.uniform(-0.5, 0.5),1)
         self.rotated = 0
         self.rotation = random.randint(50,100)
+        self.time_alive = 0
 
     def update(self, dt):
         self.rect.center += self.speed * self.direction * dt
@@ -111,7 +112,7 @@ def display_score():
     text_rect = text_surf.get_frect(midtop = (window_width / 2, 30))
     
     #draw border
-    border = pygame.draw.rect(screen, '#c1c2c7', text_rect.inflate(20,20).move(0,-5), border_radius=5)
+    pygame.draw.rect(screen, '#c1c2c7', text_rect.inflate(20,20).move(0,-5), border_radius=5)
     screen.blit(text_surf, text_rect)
 
 #general setup
@@ -153,7 +154,7 @@ meteor_event = pygame.event.custom_type()
 pygame.time.set_timer(meteor_event, 500)
 
 while running:
-    dt = clock.tick() / 1000
+    delta_time = clock.tick() / 1000
     #event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -164,7 +165,7 @@ while running:
 
     #update frame
     collisions()
-    all_sprites.update(dt)
+    all_sprites.update(delta_time)
 
     #draw the game
     screen.fill("#3a2e3f")
